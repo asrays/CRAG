@@ -6,7 +6,8 @@ The LLM is running locally in the system I'm not using any API.
 
 ## Tech Stack
 
-- **Programming Language:** Python  
+- **Programming Language:** Python
+- **Cuda Version:** 12.2
 - **Core Libraries:**  
   - **LangChain:** A framework for developing applications powered by language models. It is used for document loading, text splitting, vector store management, and creating the overall RAG pipeline.  
   - **LangGraph:** A library for building stateful, multi-agent applications with LLMs.  
@@ -50,23 +51,24 @@ The chatbot is built around a stateful graph (`StateGraph`) that manages the flo
    - Documents are divided into smaller chunks to improve retrieval efficiency. 
    - An embedding cache is implemented so embeddings are computed only once. On subsequent runs, the system reuses the locally stored embeddings instead of recalculating them.
 
-2. **Vector Store and Retrievers:**  
+2. **Vector Store and Retrievers:**
+   Applied embedding caching; first run generates and stores the embeddings locally, so that subsequent queries can use the cached database instead of recomputing them.
    - **ChromaDB:** Stores the document embeddings for efficient semantic search.  
    - **OllamaEmbeddings:** Used to generate embeddings for the documents and query.  
    - **Ensemble Retriever:** Combines both semantic (`vector_retriever`) and keyword-based (`bm25_retriever`) search to retrieve a diverse set of relevant documents.  
 
-3. **Re-ranker:**  
+4. **Re-ranker:**  
    - **FlashRank:** A cross-encoder model that re-ranks the retrieved documents based on their relevance to the user's question.  
 
-4. **Language Model (LLM):**  
+5. **Language Model (LLM):**  
    The Llama 3 8B open sourced model is used for two main purposes:  
      - Generating answers based on the retrieved context.  
      - Grading the relevance of the retrieved documents.  
 
-5. **Graph State:**  
+6. **Graph State:**  
    - A `TypedDict` that represents the state of the graph, including the user's question, retrieved documents, generated answer, and the number of retries.  
 
-6. **Graph Nodes:**  
+7. **Graph Nodes:**  
    - Each node in the graph represents a specific function in the RAG pipeline, such as retrieving documents, re-ranking, generating an answer, grading documents, and transforming the query.  
 
 ## LangGraph Workflow
