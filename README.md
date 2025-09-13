@@ -18,7 +18,7 @@ The LLM is running locally in the system I'm not using any API.
 - **Models:**  
   - **`llama3:8b`:** An open source model Llama 3 8B model running locally for embeddings and text generation. This language model is also used for generating answers and grading documents.  
 
-## Install
+## Setup & Install
 
 To set up Ollama and pull the open-source Llama 3 (8B) model:
 
@@ -28,14 +28,19 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 # Pull the Llama 3 (8B) model
 ollama pull llama3:8b
+
+# Create conda env
+conda create -n chat python=3.9
+conda activate chat
+
+# Install dependency
+pip install -r requirements.txt
 ```
 
-pip install -r requirements.txt
-
-Inference 
-
+```bash
+# Inference 
 python main.py
-
+```
 ## Architecture
 
 The chatbot is built around a stateful graph (`StateGraph`) that manages the flow of data and operations. The main components of the architecture are:
@@ -64,7 +69,10 @@ The chatbot is built around a stateful graph (`StateGraph`) that manages the flo
 6. **Graph Nodes:**  
    - Each node in the graph represents a specific function in the RAG pipeline, such as retrieving documents, re-ranking, generating an answer, grading documents, and transforming the query.  
 
-## Workflow
+## LangGraph Workflow
+
+![Demo Image](./workflow.png)
+
 
 The program executes the following workflow, managed by the `StateGraph`:
 
@@ -92,5 +100,10 @@ The program executes the following workflow, managed by the `StateGraph`:
 7. **Fallback:**  
    - If the RAG pipeline fails to find relevant documents even after a retry, the LLM generates an answer directly from the user's question without any context.
 
-This workflow ensures that the chatbot provides the most relevant and accurate answers by leveraging a combination of retrieval, re-ranking, and dynamic query transformation.
+## Further Work
+
+- Enhance response quality using advanced prompt engineering techniques such as *chain-of-thought reasoning* and *self-consistency*.  
+- Improve model accuracy by performing full fine-tuning or applying parameter-efficient methods like *LoRA* on medical domain datasets.  
+- Incorporate evaluation metrics such as *Recall* and *BLEU* to systematically assess and validate output quality.  
+- Explore hyperparameter optimization, including experimenting with different *chunk-splitting strategies*, *re-rankers*, to improve retrieval and overall system performance.
 
