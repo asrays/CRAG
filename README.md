@@ -52,7 +52,7 @@ The chatbot is built around a stateful graph (`StateGraph`) that manages the flo
    - An embedding cache is implemented so embeddings are computed only once. On subsequent runs, the system reuses the locally stored embeddings instead of recalculating them.
 
 2. **Vector Store and Retrievers:**
-   Applied embedding caching; first run generates and stores the embeddings locally, so that subsequent queries can use the cached database instead of recomputing them.
+   Applied embedding caching; first run generates and stores the embeddings locally, so that subsequent queries can use the cached database instead of recomputing them. First time it take around 25-30 mins to generate embeddings.
    - **ChromaDB:** Stores the document embeddings for efficient semantic search.  
    - **OllamaEmbeddings:** Used to generate embeddings for the documents and query.  
    - **Ensemble Retriever:** Combines both semantic (`vector_retriever`) and keyword-based (`bm25_retriever`) search to retrieve a diverse set of relevant documents.  
